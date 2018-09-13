@@ -17,6 +17,8 @@ public abstract class Piece {
 
     public abstract boolean move(int row, int col);
 
+    public abstract boolean attack(int row, int col);
+
     public int getRow(){
         return row;
     }
@@ -31,6 +33,13 @@ public abstract class Piece {
 
     public void setCol(int col){
         this.col = col;
+    }
+
+    public int oppositeColor(){
+        if(this.color == Piece.BLACK)
+            return Piece.WHITE;
+        else
+            return Piece.BLACK;
     }
 
 }

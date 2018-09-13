@@ -45,4 +45,18 @@ public class Pawn extends Piece {
         }
         return false;
     }
+
+    public boolean attack(int row, int col){
+        if(this.color == Piece.BLACK){
+            if(row == this.row + 1 && (col == this.col - 1 || col == this.col + 1)) {
+                return true;
+            }
+        }
+        else if(this.color == Piece.WHITE){
+            if(row == this.row - 1 && (col == this.col - 1 || col == this.col + 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
