@@ -6,7 +6,7 @@ public class King extends Piece{
         super(row, col, color, key);
     }
 
-    public boolean attack(int row, int col) {
+    public boolean attack(int row, int col, Square[][] board) {
         if(Math.abs(this.row - row) > 1 || Math.abs(this.col - col) > 1)
             return false;
         else if (this.row == row && this.col == col)
@@ -14,7 +14,7 @@ public class King extends Piece{
         return true;
     }
 
-    public boolean move(int row, int col){
+    public boolean move(int row, int col, Square[][] board){
         if(Math.abs(this.row - row) > 1 || Math.abs(this.col - col) > 1)
             return false;
         else if (this.row == row && this.col == col)

@@ -1,16 +1,16 @@
-public class Rook extends Piece{
+public class Bishop extends Piece{
 
-    public static final String key = "R";
+    public static final String key = "B";
 
-    public Rook(int row, int col, int color){
+    public Bishop(int row, int col, int color){
         super(row, col, color, key);
     }
 
     public boolean attack(int row, int col, Square[][] board) {
         boolean[][] moveList = new boolean[Board.SIZE][Board.SIZE];
         int x = this.row - 1;
-        int y = this.col;
-        while(x >= 0){
+        int y = this.col - 1;
+        while(x >= 0 && y >= 0){
             if(board[x][y].hasPiece()) {
                 moveList[x][y] = true;
                 break;
@@ -18,11 +18,12 @@ public class Rook extends Piece{
             else {
                 moveList[x][y] = true;
                 x--;
+                y--;
             }
         }
         x = this.row + 1;
-        y = this.col;
-        while(x < Board.SIZE){
+        y = this.col + 1;
+        while(x < Board.SIZE && y < Board.SIZE){
             if(board[x][y].hasPiece()) {
                 moveList[x][y] = true;
                 break;
@@ -30,11 +31,12 @@ public class Rook extends Piece{
             else {
                 moveList[x][y] = true;
                 x++;
+                y++;
             }
         }
-        x = this.row;
+        x = this.row + 1;
         y = this.col - 1;
-        while(y >= 0){
+        while(y >= 0 && x < Board.SIZE){
             if(board[x][y].hasPiece()) {
                 moveList[x][y] = true;
                 break;
@@ -42,11 +44,12 @@ public class Rook extends Piece{
             else {
                 moveList[x][y] = true;
                 y--;
+                x++;
             }
         }
-        x = this.row;
+        x = this.row - 1;
         y = this.col + 1;
-        while(y < Board.SIZE){
+        while(y < Board.SIZE && x >= 0){
             if(board[x][y].hasPiece()) {
                 moveList[x][y] = true;
                 break;
@@ -54,6 +57,7 @@ public class Rook extends Piece{
             else {
                 moveList[x][y] = true;
                 y++;
+                x--;
             }
         }
         if(moveList[row][col])
@@ -64,43 +68,51 @@ public class Rook extends Piece{
     public boolean move(int row, int col, Square[][] board){
         boolean[][] moveList = new boolean[Board.SIZE][Board.SIZE];
         int x = this.row - 1;
-        int y = this.col;
-        while(x >= 0){
-            if(board[x][y].hasPiece())
+        int y = this.col - 1;
+        while(x >= 0 && y >= 0){
+            if(board[x][y].hasPiece()) {
                 break;
+            }
             else {
                 moveList[x][y] = true;
                 x--;
-            }
-        }
-        x = this.row + 1;
-        y = this.col;
-        while(x < Board.SIZE){
-            if(board[x][y].hasPiece())
-                break;
-            else {
-                moveList[x][y] = true;
-                x++;
-            }
-        }
-        x = this.row;
-        y = this.col - 1;
-        while(y >= 0){
-            if(board[x][y].hasPiece())
-                break;
-            else {
-                moveList[x][y] = true;
                 y--;
             }
         }
-        x = this.row;
+        x = this.row + 1;
         y = this.col + 1;
-        while(y < Board.SIZE){
-            if(board[x][y].hasPiece())
+        while(x < Board.SIZE && y < Board.SIZE){
+            if(board[x][y].hasPiece()) {
                 break;
+            }
+            else {
+                moveList[x][y] = true;
+                x++;
+                y++;
+            }
+        }
+        x = this.row + 1;
+        y = this.col - 1;
+        while(y >= 0 && x < Board.SIZE){
+            if(board[x][y].hasPiece()) {
+                break;
+            }
+            else {
+                moveList[x][y] = true;
+                y--;
+                x++;
+            }
+        }
+        x = this.row - 1;
+        y = this.col + 1;
+        while(y < Board.SIZE && x >= 0){
+            if(board[x][y].hasPiece()) {
+                break;
+            }
             else {
                 moveList[x][y] = true;
                 y++;
+                x--;
             }
         }
         if(moveList[row][col])

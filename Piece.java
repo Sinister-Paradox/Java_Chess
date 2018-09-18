@@ -15,9 +15,9 @@ public abstract class Piece {
         this.key = key;
     }
 
-    public abstract boolean move(int row, int col);
+    public abstract boolean move(int row, int col, Square[][] board);
 
-    public abstract boolean attack(int row, int col);
+    public abstract boolean attack(int row, int col, Square[][] board);
 
     public int getRow(){
         return row;

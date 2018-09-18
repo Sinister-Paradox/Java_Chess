@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class Board extends JFrame {
 
     private static final String TITLE = "Chess";
-    private static final int SIZE = 8;
+    public static final int SIZE = 8;
     Square[][] grid;
 
     private boolean pieceSelected = false;
@@ -44,13 +44,13 @@ public class Board extends JFrame {
 
                             // If square contains enemy piece
                             if (source.hasPiece() && source.getPiece().oppositeColor() == selected.getPiece().color){
-                                movable = selected.getPiece().attack(source.getRow(), source.getCol());
+                                movable = selected.getPiece().attack(source.getRow(), source.getCol(), grid);
                             }
                             else if(source.hasPiece() && source.getPiece().color == selected.getPiece().color){
                                 movable = false;
                             }
                             else {
-                                movable = selected.getPiece().move(source.getRow(), source.getCol());
+                                movable = selected.getPiece().move(source.getRow(), source.getCol(), grid);
                             }
                             System.out.println(movable);
                             if(movable){
@@ -65,6 +65,10 @@ public class Board extends JFrame {
                                 System.out.println(source.getPiece());
 
                                 selected.setBackground(Color.WHITE);
+                                if(source.getPiece().color == Piece.BLACK)
+                                    source.setForeground(Color.RED);
+                                else
+                                    source.setForeground(Color.BLACK);
                                 selected.setText("");
 
 
@@ -72,7 +76,6 @@ public class Board extends JFrame {
                                 pieceSelected = false;
 
                                 turn = source.getPiece().oppositeColor();
-
 
                             }
 
@@ -89,28 +92,59 @@ public class Board extends JFrame {
         setVisible(true);
     }
 
+    private void setPiece(int row, int col, int color, Piece piece){
+        grid[row][col].setPiece(piece);
+        if(color == Piece.BLACK)
+            grid[row][col].setForeground(Color.RED);
+        else
+            grid[row][col].setForeground(Color.BLACK);
+    }
+
     void init(){
         for(int i = 0;i<8;i++) {
             Pawn p = new Pawn(1, i, Piece.BLACK);
-            grid[1][i].setPiece(p);
+            setPiece(1,i,Piece.BLACK, p);
         }
 
         for(int i = 0;i<8;i++) {
             Pawn p = new Pawn(6, i, Piece.WHITE);
-            grid[6][i].setPiece(p);
+            setPiece(6,i,Piece.WHITE, p);
         }
         King k1 = new King(0,4,Piece.BLACK);
         King k2 = new King(7,4,Piece.WHITE);
-        grid[0][4].setPiece(k1);
-        grid[7][4].setPiece(k2);
+        setPiece(0,4,Piece.BLACK, k1);
+        setPiece(7,4,Piece.WHITE, k2);
 
         Knight n1 = new Knight(0,1, Piece.BLACK);
         Knight n2 = new Knight(0,6, Piece.BLACK);
         Knight n3 = new Knight(7,1, Piece.WHITE);
         Knight n4 = new Knight(7,6, Piece.WHITE);
-        grid[0][1].setPiece(n1);
-        grid[0][6].setPiece(n2);
-        grid[7][1].setPiece(n3);
-        grid[7][6].setPiece(n4);
+        setPiece(0,1,Piece.BLACK, n1);
+        setPiece(0,6,Piece.BLACK, n2);
+        setPiece(7,1,Piece.WHITE, n3);
+        setPiece(7,6,Piece.WHITE, n4);
+
+        Rook r1 = new Rook(0,7, Piece.BLACK);
+        Rook r2 = new Rook(0,0, Piece.BLACK);
+        Rook r3 = new Rook(7,7, Piece.WHITE);
+        Rook r4 = new Rook(7,0, Piece.WHITE);
+        setPiece(0,7,Piece.BLACK, r1);
+        setPiece(0,0,Piece.BLACK, r2);
+        setPiece(7,7,Piece.WHITE, r3);
+        setPiece(7,0,Piece.WHITE, r4);
+
+        Bishop b1 = new Bishop(0,2,Piece.BLACK);
+        Bishop b2 = new Bishop(0,5,Piece.BLACK);
+        Bishop b3 = new Bishop(7,2,Piece.WHITE);
+        Bishop b4 = new Bishop(7,5,Piece.WHITE);
+        setPiece(0,2,Piece.BLACK, b1);
+        setPiece(0,5,Piece.BLACK, b2);
+        setPiece(7,2,Piece.WHITE, b3);
+        setPiece(7,5,Piece.WHITE, b4);
+
+        Queen q1 = new Queen(0, 3, Piece.BLACK);
+        Queen q2 = new Queen(7, 3, Piece.WHITE);
+        setPiece(0,3,Piece.BLACK, q1);
+        setPiece(7,3,Piece.WHITE, q2);
     }
 }

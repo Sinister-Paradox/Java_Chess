@@ -6,7 +6,7 @@ public class Knight extends Piece{
         super(row, col, color, key);
     }
 
-    public boolean attack(int row, int col) {
+    public boolean attack(int row, int col, Square[][] board) {
         if(Math.abs(this.row - row) > 2 || Math.abs(this.col - col) > 2 || (this.row == row && this.col == col))
             return false;
         if(Math.abs(this.row - row) == Math.abs(this.col - col))
@@ -14,7 +14,7 @@ public class Knight extends Piece{
         return true;
     }
 
-    public boolean move(int row, int col){
-        return attack(row, col);
+    public boolean move(int row, int col, Square[][] board){
+        return attack(row, col, board);
     }
 }

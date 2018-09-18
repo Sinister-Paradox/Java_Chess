@@ -6,7 +6,7 @@ public class Pawn extends Piece {
         super(row, col, color, key);
     }
 
-    public boolean move(int row, int col){
+    public boolean move(int row, int col, Square[][] board){
         if(this.color == Piece.BLACK){
             if(this.row == 1){
                 if((row == 2 || row == 3) && col == this.col) {
@@ -46,7 +46,7 @@ public class Pawn extends Piece {
         return false;
     }
 
-    public boolean attack(int row, int col){
+    public boolean attack(int row, int col, Square[][] board){
         if(this.color == Piece.BLACK){
             if(row == this.row + 1 && (col == this.col - 1 || col == this.col + 1)) {
                 return true;
