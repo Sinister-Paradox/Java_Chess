@@ -3,6 +3,7 @@ import chess.*;
 
 public abstract class Piece {
 
+    // Piece representations
     public static final int WHITE = 1;
     public static final int BLACK = 0;
 
@@ -22,17 +23,17 @@ public abstract class Piece {
 
     public abstract boolean attack(int row, int col, Square[][] board);
 
-    /*public int getRow(){
+    public int getRow(){
         return row;
-    }*/
+    }
 
     public void setRow(int row){
         this.row = row;
     }
 
-    /*public int getCol(){
+    public int getCol(){
         return col;
-    }*/
+    }
 
     public void setCol(int col){
         this.col = col;
@@ -49,8 +50,7 @@ public abstract class Piece {
     public int oppositeColor(){
         if(this.color == Piece.BLACK)
             return Piece.WHITE;
-        else
-            return Piece.BLACK;
+        return Piece.BLACK;
     }
 
 }

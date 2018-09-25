@@ -36,12 +36,17 @@ public class Square extends JButton {
     }
 
     Piece getPiece(){
-        return piece;
+        if(this.hasPiece())
+            return piece;
+        return null;
     }
 
     void setPiece(Piece piece){
         this.piece = piece;
-        setText(piece.getKey());
+        if(piece != null)
+            setText(piece.getKey());
+        else
+            setText("");
     }
 
     void deletePiece(){

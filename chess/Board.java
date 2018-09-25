@@ -14,7 +14,7 @@ public class Board extends JFrame {
     private Square[][] grid;
 
     private boolean pieceSelected = false;
-    private Square selected = null;
+    private Square selected = null;       // Holds the selected square
 
     private int turn = Piece.WHITE;
 
@@ -30,20 +30,27 @@ public class Board extends JFrame {
                 Square temp = new Square(i, j);
                 temp.setBackground(Color.WHITE);
                 temp.addActionListener(new ActionListener() {
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        Square source =(Square) e.getSource();
+
+                        Square source =(Square) e.getSource();  // Clicked square, "DESTINATION"
+
+                        // Selecting a piece to move, turns square pink
                         if(!pieceSelected && source.hasPiece() && source.getPiece().getColor() == turn){
                             source.setBackground(Color.PINK);
                             pieceSelected = true;
                             selected = source;
                         }
+                        // Deselecting a piece
                         else if(pieceSelected && source == selected){
                             source.setBackground(Color.WHITE);
                             selected = null;
                             pieceSelected = false;
                         }
+                        // Piece functionality "move"
                         else if(pieceSelected){
+
                             boolean movable;
 
                             // If square contains enemy piece
@@ -56,35 +63,46 @@ public class Board extends JFrame {
                             else {
                                 movable = selected.getPiece().move(source.getRow(), source.getCol(), grid);
                             }
-                            System.out.println(movable);
                             if(movable){
+
+                                // Switch Pieces
+                                Piece dest = source.getPiece();
+                                Piece orig = selected.getPiece();
+                                int prow = selected.getRow();
+                                int pcol = selected.getCol();
 
                                 source.setPiece(selected.getPiece());
                                 selected.deletePiece();
-
                                 source.getPiece().setCol(source.getCol());
                                 source.getPiece().setRow(source.getRow());
 
-                                System.out.println(selected.getPiece());
-                                System.out.println(source.getPiece());
+                                // Checks for illegal move, then switches back
+                                if(isCheckmate(orig.getColor(), grid)) {
+                                    source.getPiece().setCol(pcol);
+                                    source.getPiece().setRow(prow);
+                                    selected.setPiece(source.getPiece());
+                                    source.setPiece(dest);
+                                }
 
-                                selected.setBackground(Color.WHITE);
-                                if(source.getPiece().getColor() == Piece.BLACK)
-                                    source.setForeground(Color.RED);
-                                else
-                                    source.setForeground(Color.BLACK);
-                                selected.setText("");
+                                // Perform final display changes
+                                else {
+                                    selected.setBackground(Color.WHITE);
+                                    if (source.getPiece().getColor() == Piece.BLACK)
+                                        source.setForeground(Color.RED);
+                                    else
+                                        source.setForeground(Color.BLACK);
+                                    selected.setText("");
 
-                                selected = null;
-                                pieceSelected = false;
+                                    selected = null;
+                                    pieceSelected = false;
 
-                                turn = source.getPiece().oppositeColor();
-
+                                    turn = source.getPiece().oppositeColor();
+                                }
                             }
-
                         }
                     }
                 });
+
                 grid[i][j] = temp;
                 add(temp);
             }
@@ -95,6 +113,39 @@ public class Board extends JFrame {
         setVisible(true);
     }
 
+    /*
+    Determines whether a king is in check using all piece attack functions
+     */
+    private boolean isCheckmate(int color, Square[][] board){
+
+        // Find king position
+        int kingx = 0;
+        int kingy = 0;
+        for(int i = 0;i<Board.SIZE;i++){
+            for(int j = 0;j<Board.SIZE;j++){
+                if(board[i][j].hasPiece() && board[i][j].getPiece().getColor() == color && board[i][j].getPiece().getKey().equals("K")){
+                    kingx = i;
+                    kingy = j;
+                }
+            }
+        }
+
+        // Check if any opposing pieces can take king
+        for(int i = 0;i<Board.SIZE;i++){
+            for(int j = 0;j<Board.SIZE;j++){
+                if(board[i][j].hasPiece()){
+                    if((board[i][j].getPiece().getColor() != color) && board[i][j].getPiece().attack(kingx,kingy,board))
+                        return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    /*
+    Sets the piece in the grid and the grids specified color
+     */
     private void setPiece(int row, int col, int color, Piece piece){
         grid[row][col].setPiece(piece);
         if(color == Piece.BLACK)
@@ -103,6 +154,9 @@ public class Board extends JFrame {
             grid[row][col].setForeground(Color.BLACK);
     }
 
+    /*
+    Adds all the specific pieces in the initial layout
+     */
     void init(){
         for(int i = 0;i<8;i++) {
             Pawn p = new Pawn(1, i, Piece.BLACK);

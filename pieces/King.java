@@ -19,6 +19,9 @@ public class King extends Piece {
     }
 
     public boolean move(int row, int col, Square[][] board){
+
+        // CASTLING
+
         if(Math.abs(this.row - row) > 1 || Math.abs(this.col - col) > 1)
             return false;
         else if (this.row == row && this.col == col)

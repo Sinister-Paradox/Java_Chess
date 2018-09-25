@@ -10,6 +10,9 @@ public class Bishop extends Piece {
         super(row, col, color, key);
     }
 
+    /*
+    Function move, but goes one further to return true when on piece
+     */
     public boolean attack(int row, int col, Square[][] board) {
         boolean[][] moveList = new boolean[Board.SIZE][Board.SIZE];
         int x = this.row - 1;
